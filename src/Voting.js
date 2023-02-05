@@ -21,9 +21,7 @@ const voteABI = [
     // token count
     "function projectList(uint) view returns(uint)"
 ]
-const delay = ms => new Promise(
-  resolve => setTimeout(resolve, ms)
-);
+
 
 function Voting() {
   const [arr,setArr] = useState([
@@ -75,6 +73,10 @@ function Voting() {
 
    const [votes3, setVotes3] = useState(0)
    const [voted3, setVoted3] = useState(false)
+
+   const [totalvotes1, setTVotes1] = useState(0)
+   const [totalvotes2, setTVotes2] = useState(0)
+   const [totalvotes3, setTVotes3] = useState(0)
 
   const provider = new ethers.providers.Web3Provider(window.ethereum)
   provider.send("eth_requestAccounts", []);
@@ -144,6 +146,20 @@ if (votes2>=3){
 if (votes3>=3){
     uploadText(arr[0])
   }
+
+  sContract.totalVotesFor("0x4b696d6265726c7920636c61726b20677265656e206669656c64000000000021").then(data => {
+    const vote=parseInt(data['_hex'],16);
+    setTVotes1(vote);
+ }).catch(err => console.log(err));
+ sContract.totalVotesFor("0x4b696d6265726c7920636c61726b20677265656e206669656c64000000000012").then(data => {
+  const vote=parseInt(data['_hex'],16);
+  setTVotes2(vote);
+}).catch(err => console.log(err));
+sContract.totalVotesFor("0x4b696d6265726c7920636c61726b20677265656e206669656c64000000000014").then(data => {
+  const vote=parseInt(data['_hex'],16);
+  setTVotes3(vote);
+}).catch(err => console.log(err));
+
   return (
     <>
     
@@ -154,6 +170,7 @@ if (votes3>=3){
       <th scope="col">Owner Name</th>
       <th scope="col">SOC</th>
       <th scope="col">Carbon credits</th>
+      <th scope="col">Total Votes</th>
       <th scope="col">Vote</th>
     </tr>
   </thead>
@@ -163,6 +180,7 @@ if (votes3>=3){
       <td>{arr[0]['Project Owner']}</td>
       <td>{arr[0]['SOC']}</td>
       <td>{arr[0]['Carbon credits']}</td>
+      <td>{totalvotes1}</td>
       <td>{voted1 ? votes1 :
         <Button label="Vote" mode="strong" size="small" onClick={() => vote_click1(arr[0]['address'])}/>}</td>
     </tr>
@@ -172,6 +190,7 @@ if (votes3>=3){
       <td>{arr[1]['Project Owner']}</td>
       <td>{arr[1]['SOC']}</td>
       <td>{arr[1]['Carbon credits']}</td>
+      <td>{totalvotes2}</td>
       <td>{voted2 ? votes2 :
         <Button label="Vote" mode="strong" size="small" onClick={() => vote_click2(arr[1]['address'])}/>}</td>
     </tr>
@@ -181,6 +200,7 @@ if (votes3>=3){
       <td>{arr[2]['Project Owner']}</td>
       <td>{arr[2]['SOC']}</td>
       <td>{arr[2]['Carbon credits']}</td>
+      <td>{totalvotes3}</td>
       <td>{voted3 ? votes3 :
         <Button label="Vote" mode="strong" size="small" onClick={() => vote_click3(arr[2]['address'])}/>}</td>
     </tr>

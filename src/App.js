@@ -5,6 +5,7 @@ import Project from './Project.js';
 import ProjectList from './ProjectList.js';
 import ML from './ML.js';
 import Voting from './Voting.js';
+import Dao from './Dao.js';
 import Token from './Token.js';
 import {ethers} from 'ethers';
 import Logo from './Asset.svg';
@@ -54,7 +55,6 @@ function App() {
     }
   };
 
-console.log(isConnected);
   return (
     <Main>
       <Header
@@ -71,7 +71,7 @@ console.log(isConnected);
         }
       />
       <Tabs
-      items={['Project', 'Project List', 'ML', 'Voting', 'Token']}
+      items={['Project', 'Project List', 'ML', 'Voting', 'Token','Dao']}
       selected={selected}
       onChange={setSelected}
     />
@@ -80,7 +80,7 @@ console.log(isConnected);
      selected===2 ? <div><ML/></div> :  
      selected===3 ? <div><Voting/></div> :  
      selected===4 ? <div><Token/></div> :  
-     selected===5 ? <div>Dao</div> :  <div></div>}
+     selected===5 ? <div><Dao/></div> :  <div></div>}
    
     </Main>
   )
